@@ -15,7 +15,6 @@ from pprint import pprint as pp
 #          self.status = status
 
 
-
 out = psutil.net_connections()
 #pp(out)
 output = [];
