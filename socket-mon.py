@@ -15,10 +15,6 @@ from pprint import pprint as pp
 #          self.status = status
 
 
-# hosts = [mysockets(1, "asdasd", "fghdfgdf", "dfgdfgdf"),
-#          mysockets(26, "rtyrtyr", "rtyrty", "rtyrtyrt"),
-#          mysockets(33, "rtyrtyr", "rtyrt", "rtyrtyrt"),
-#          mysockets(4, "bfvbv", "cvbcvcv", "cvbcvbcvv")]
 
 out = psutil.net_connections()
 #pp(out)
