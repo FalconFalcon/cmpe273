@@ -22,8 +22,18 @@ from pprint import pprint as pp
 
 out = psutil.net_connections()
 #pp(out)
+output = [];
 out.sort(key=lambda a: a.pid, reverse=False)
 print "pid"','"laddr"','"raddr"','"status"
 for x in out:
     #print x.pid + "," str(x.laddr) "," + x.raddr + "," + x.status
-    if x.raddr: print x.pid, x.raddr, x.laddr, x.status
+    pid = x.pid
+    raddr = x.raddr
+    laddr = x.laddr
+    status = x.status
+    if raddr: 
+    	laddr_str = laddr[0] + '@' + str(laddr[1]) 
+    	raddr_st = raddr[0] + '@' + str(raddr[1])
+    	output.append([pid,laddr_str,raddr_st,status])
+for element in output:
+	print ("\"%d\",\"%s\",\"%s\",\"%s\"" % (element[0], element[1], element[2], element[3]));
