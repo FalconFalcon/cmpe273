@@ -4,8 +4,7 @@ import subprocess
 import os
 import re
 from pprint import pprint as pp
-
-# print "List of all connections using sockets"
+ # print "List of all connections using sockets"
 
 # class mysockets:
 #      def __init__(self, pid, laddr, raddr, status):
@@ -15,7 +14,7 @@ from pprint import pprint as pp
 #          self.status = status
 
 
-out = psutil.net_connections()
+out = psutil.net_connections('tcp')
 #pp(out)
 output = [];
 out.sort(key=lambda a: a.pid, reverse=False)
@@ -27,8 +26,9 @@ for x in out:
     laddr = x.laddr
     status = x.status
     if raddr: 
-    	laddr_str = laddr[0] + '@' + str(laddr[1]) 
-    	raddr_st = raddr[0] + '@' + str(raddr[1])
-    	output.append([pid,laddr_str,raddr_st,status])
+    	if laddr:
+    		laddr_str = laddr[0] + '@' + str(laddr[1]) 
+    		raddr_st = raddr[0] + '@' + str(raddr[1])
+    		output.append([pid,laddr_str,raddr_st,status])
 for element in output:
 	print ("\"%d\",\"%s\",\"%s\",\"%s\"" % (element[0], element[1], element[2], element[3]));
