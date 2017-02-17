@@ -3,32 +3,34 @@ import psutil
 import subprocess
 import os
 import re
+import collections
 from pprint import pprint as pp
- # print "List of all connections using sockets"
+from itertools import groupby
+from operator import itemgetter
+from operator import attrgetter
 
-# class mysockets:
-#      def __init__(self, pid, laddr, raddr, status):
-#          self.pid = pid
-#          self.laddr = laddr
-#          self.raddr = raddr
-#          self.status = status
-
-
-out = psutil.net_connections('tcp')
-#pp(out)
-output = [];
-out.sort(key=lambda a: a.pid, reverse=False)
-print "pid"','"laddr"','"raddr"','"status"
-for x in out:
-    #print x.pid + "," str(x.laddr) "," + x.raddr + "," + x.status
+out = psutil.net_connections(kind='tcp')
+output = []
+counter=0
+groupingPID=sorted(out,key=attrgetter('pid')) #PIDs are grouped here
+countingPID= collections.Counter(t[6] for t in groupingPID) 
+sortedbyconnections=sorted(groupingPID,key=lambda t:countingPID[t[6]],reverse=True) #sort
+print '"pid"','"laddr"','"raddr"','"status"'
+for x in sortedbyconnections:
     pid = x.pid
     raddr = x.raddr
     laddr = x.laddr
     status = x.status
-    if raddr: 
-    	if laddr:
+    if raddr:   #check if raddr is present
+    	if laddr:   #check is laddr is present
     		laddr_str = laddr[0] + '@' + str(laddr[1]) 
     		raddr_st = raddr[0] + '@' + str(raddr[1])
     		output.append([pid,laddr_str,raddr_st,status])
+# for key, items in groupby(output, itemgetter(0)):
+#     print key
+#     for subitem in items:
+#         print subitem
+#    print '-' * 65
 for element in output:
-	print ("\"%d\",\"%s\",\"%s\",\"%s\"" % (element[0], element[1], element[2], element[3]));
+    print ("\"%d\",\"%s\",\"%s\",\"%s\"" % (element[0], element[1], element[2], element[3]));
+
